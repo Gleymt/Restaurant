@@ -1,0 +1,25 @@
+DROP DATABASE IF EXISTS `RESTAURANT`;
+CREATE DATABASE IF NOT EXISTS `RESTAURANT`;
+USE `RESTAURANT`;
+
+
+DROP TABLE IF EXISTS `FOOD`;
+CREATE TABLE `FOOD`(
+	`ID` bigint(11) NOT NULL AUTO_INCREMENT,
+	`NAME` varchar(100) NOT NULL UNIQUE,
+	`DESCRIPTION` varchar(200),
+    `PRICE` double unsigned CHECK(`PRICE` > 0),
+    `TYPE` varchar(10),
+    CONSTRAINT chk_val CHECK (`TYPE` IN ('CHEAP', 'NORMAL', 'EXPENSIVE')),
+    `IS_VEGAN` boolean,
+	`CREATED_AT` timestamp DEFAULT CURRENT_TIMESTAMP,
+	`UPDATED_AT` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`ID`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8;
+
+
+INSERT INTO `FOOD` ( NAME, DESCRIPTION, PRICE, TYPE, IS_VEGAN ) VALUES
+('Carbanana', 'Pasta la vista', 2.15, 'CHEAP', false), 
+('Banana', 'Desert', 17.987, 'EXPENSIVE', true),
+('Taco', 'Mehico delicatese', 8, 'NORMAL', false),
+('Boorito', 'Desert mexican', 6.9, 'NORMAL', false);
