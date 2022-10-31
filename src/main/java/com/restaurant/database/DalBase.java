@@ -6,22 +6,29 @@ import java.sql.SQLException;
 
 public interface DalBase {
 
-    void showFood() throws SQLException;
+    void showAllFood() throws SQLException;
 
-    void addFood() throws SQLException;
+    void sortAllFoodByName() throws SQLException;
 
-    void sortFoodName() throws SQLException;
+    void sortAllFoodByPrice() throws SQLException;
 
-    void sortFoodPrice() throws SQLException;
+    void addFood(Food food) throws SQLException;
 
     void typeList() throws SQLException;
 
-    void deleteID() throws SQLException;
+    void deleteID(long id) throws SQLException;
 
-    void deleteName() throws SQLException;
+    void deleteName(String name) throws SQLException;
 
-    void updateFoodID() throws SQLException;
+    void updateFoodID(long id) throws SQLException;
 
-    void updateFoodName() throws SQLException;
-    //void addFood() throws SQLException;
+    void updateFoodName(String name) throws SQLException;
+
+   // Food selectFoodById(long id) throws SQLException;
+
+    // Food selectFoodByName(String name) throws SQLException;
+
+   // boolean isNameUnique(String name) throws SQLException;
+
+
 }

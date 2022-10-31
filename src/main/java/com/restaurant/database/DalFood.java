@@ -1,15 +1,13 @@
 package com.restaurant.database;
 
 import com.restaurant.Food;
+import com.restaurant.utils.Helpers;
 
-import javax.xml.transform.Result;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 public class DalFood implements DalBase {
@@ -19,7 +17,7 @@ public class DalFood implements DalBase {
     private final static Logger log = Logger.getLogger(DalFood.class.getName());
     private final static String basePath = System.getProperty("user.dir");
     private final static String dbInfoPath = "/src/main/resources/DatabaseInfo";
-    private static Properties properties = new Properties();
+    private final static Properties properties = new Properties();
     private static String root;
     private static String username;
     private static String password;
@@ -39,7 +37,7 @@ public class DalFood implements DalBase {
     }
 
     @Override
-    public void showFood() throws SQLException {
+    public void showAllFood() throws SQLException {
         result = statement.executeQuery("select * from food");
 
         while (result.next()) {
@@ -48,56 +46,54 @@ public class DalFood implements DalBase {
     }
 
     @Override
-    public void addFood() throws SQLException {
+    public void sortAllFoodByName() throws SQLException {
+
+        result = statement.executeQuery("select * from food order by name");
+
+        while (result.next()) {
+            log.info(result.getString("name") + ", " + result.getString("price"));
+        }
+
+    }
+
+    @Override
+    public void sortAllFoodByPrice() throws SQLException {
+        result = statement.executeQuery("select * from food order by price");
+
+        while (result.next()) {
+            log.info(result.getString("name") + ", " + result.getString("price"));
+        }
+    }
+
+    @Override
+    public void addFood(Food food) throws SQLException {
         PreparedStatement myStmt = connection.prepareStatement("insert into food(name, description, price, type, is_vegan)" + "values(?, ?, ?, ?, ?)");
 
-        String type;
-
-        System.out.println("Enter food name: ");
-        String name = myObj.nextLine();
-
-        System.out.println("Enter food description: ");
-        String description = myObj.nextLine();
-
-        System.out.println("Enter food price: ");
-        int price = Integer.parseInt(myObj.nextLine());
-
-        System.out.println("Enter food vegan: ");
-        boolean vegan = Boolean.parseBoolean(myObj.nextLine());
-
-        myStmt.setString(1, name);
-        myStmt.setString(2, description);
-        myStmt.setInt(3, price);
-        if (price <= 5) {
-            type = "CHEAP";
-        } else if (price > 5 && price <= 15) {
-            type = "NORMAL";
-        } else {
-            type = "EXPENSIVE";
-        }
-        myStmt.setString(4, type);
-        myStmt.setBoolean(5, vegan);
+        myStmt.setString(1, food.getName());
+        myStmt.setString(2, food.getDescription());
+        myStmt.setFloat(3, food.getPrice());
+        myStmt.setString(4, food.getType());
+        myStmt.setBoolean(5, food.isVegan());
 
         int rowsAffected = myStmt.executeUpdate();
 
-        // int adaugare = statement.executeUpdate("insert into food(name, description, price, type, is_vegan) values ('tarantula', 'pe la coaie pe la', '15', 'NORMAL', '1')");
-        // System.out.println("You added " + adaugare + "food items");
-
-        result = statement.executeQuery("select * from food");
-
-        while (result.next()) {
-            log.info(result.getString("name") + ", " + result.getString("price"));
-        }
+        log.info("Food: " + food.getName() + " was added. Rows affected: " + rowsAffected);
     }
 
     @Override
-    public void updateFoodID() throws SQLException {
+    public void updateFoodID(long id) throws SQLException {
+        //select food by id to object
+        //get input from user
+        //modify selected food from user input
+        //log updates
+      //  Food food = selectFoodById(id);
+
         PreparedStatement myStmt = connection.prepareStatement("update food set name = ?, description = ?, price = ?, type = ?, is_vegan = ? where id = ?");
 
         String type;
 
         System.out.println("Enter food id: ");
-        int id = Integer.parseInt(myObj.nextLine());
+        id = Integer.parseInt(myObj.nextLine());
 
         System.out.println("Enter food name: ");
         String name = myObj.nextLine();
@@ -123,24 +119,21 @@ public class DalFood implements DalBase {
         }
         myStmt.setString(4, type);
         myStmt.setBoolean(5, vegan);
-        myStmt.setInt(6, id);
+       // myStmt.setLong(6, food.getId());
 
         int rowsAffected = myStmt.executeUpdate();
-
-        // int adaugare = statement.executeUpdate("insert into food(name, description, price, type, is_vegan) values ('tarantula', 'pe la coaie pe la', '15', 'NORMAL', '1')");
-        // System.out.println("You added " + adaugare + "food items");
 
         result = statement.executeQuery("select * from food");
     }
 
     @Override
-    public void updateFoodName() throws SQLException {
+    public void updateFoodName(String name) throws SQLException {
         PreparedStatement myStmt = connection.prepareStatement("update food set description = ?, price = ?, type = ?, is_vegan = ? where name = ?");
 
         String type;
 
         System.out.println("Enter food name: ");
-        String name = myObj.nextLine();
+        name = myObj.nextLine();
 
         System.out.println("Enter food description: ");
         String description = myObj.nextLine();
@@ -166,30 +159,7 @@ public class DalFood implements DalBase {
 
         int rowsAffected = myStmt.executeUpdate();
 
-        // int adaugare = statement.executeUpdate("insert into food(name, description, price, type, is_vegan) values ('tarantula', 'pe la coaie pe la', '15', 'NORMAL', '1')");
-        // System.out.println("You added " + adaugare + "food items");
-
         result = statement.executeQuery("select * from food");
-    }
-
-    @Override
-    public void sortFoodName() throws SQLException {
-
-        result = statement.executeQuery("select * from food order by name");
-
-        while (result.next()) {
-            log.info(result.getString("name") + ", " + result.getString("price"));
-        }
-
-    }
-
-    @Override
-    public void sortFoodPrice() throws SQLException {
-        result = statement.executeQuery("select * from food order by price");
-
-        while (result.next()) {
-            log.info(result.getString("name") + ", " + result.getString("price"));
-        }
     }
 
     @Override
@@ -202,36 +172,32 @@ public class DalFood implements DalBase {
     }
 
     @Override
-    public void deleteID() throws SQLException {
+    public void deleteID(long id) throws SQLException {
         PreparedStatement myStmt = connection.prepareStatement("delete from food where id = ?");
 
         System.out.println("Enter food id to delete: ");
-        int id = Integer.parseInt(myObj.nextLine());
+        id = Integer.parseInt(myObj.nextLine());
 
-        myStmt.setInt(1, id);
+        myStmt.setLong(1, id);
 
         int rowsAffected = myStmt.executeUpdate();
 
-        //int stergere = statement.executeUpdate("delete from food where id =7");
-        //System.out.println("You deleted " + stergere + " rows");
-        //result = statement.executeQuery("select * from food");
         while (result.next()) {
             log.info(result.getString("name") + ", " + result.getString("price"));
         }
     }
 
     @Override
-    public void deleteName() throws SQLException {
+    public void deleteName(String name) throws SQLException {
         PreparedStatement myStmt = connection.prepareStatement("delete from food where name = ?");
 
         System.out.println("Enter food name to delete: ");
-        String name = myObj.nextLine();
+        name = myObj.nextLine();
 
         myStmt.setString(1, name);
 
         int rowsAffected = myStmt.executeUpdate();
-        //int stergere = statement.executeUpdate("delete from food" + "where name = ?");
-        //System.out.println("You deleted " + stergere + " rows");
+
         result = statement.executeQuery("select * from food");
         while (result.next()) {
             log.info(result.getString("name") + ", " + result.getString("price"));

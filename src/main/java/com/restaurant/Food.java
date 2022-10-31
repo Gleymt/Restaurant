@@ -16,6 +16,13 @@ public class Food {
     public Food() {
     }
 
+    public Food(String name, String description, float price, boolean isVegan) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.isVegan = isVegan;
+    }
+
     public Food(String name, String description, float price, String type, boolean isVegan) {
         this.name = name;
         this.description = description;

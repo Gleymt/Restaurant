@@ -1,6 +1,7 @@
 package com.restaurant;
 
 import com.restaurant.database.DalFood;
+import com.restaurant.utils.Builders;
 
 import java.util.Scanner;
 
@@ -35,29 +36,30 @@ public class Main {
                 option = scanner.nextInt();
                 switch (option) {
                     case 1:
-                        dalFood.addFood();
+                        Food food = Builders.takeUserInputAndBuildFood();
+                        dalFood.addFood(food);
                         break;
-                    case 2:
-                        dalFood.updateFoodID();
-                        break;
-                    case 3:
-                        dalFood.updateFoodName();
-                        break;
+//                    case 2:
+//                        dalFood.updateFoodID();
+//                        break;
+//                    case 3:
+//                        dalFood.updateFoodName();
+//                        break;
                     case 4:
-                        dalFood.sortFoodPrice();
+                        dalFood.sortAllFoodByPrice();
                         break;
                     case 5:
-                        dalFood.sortFoodName();
+                        dalFood.sortAllFoodByName();
                         break;
                     case 6:
                         dalFood.typeList();
                         break;
-                    case 7:
-                        dalFood.deleteID();
-                        break;
-                    case 8:
-                        dalFood.deleteName();
-                        break;
+//                    case 7:
+//                        dalFood.deleteID();
+//                       break;
+//                    case 8:
+//                        dalFood.deleteName();
+//                        break;
                     case 9:
                         exit(0);
 
