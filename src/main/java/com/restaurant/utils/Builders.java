@@ -6,24 +6,27 @@ import java.util.Scanner;
 
 public class Builders {
 
-    public static Food takeUserInputAndBuildFood(){
+    private static final String pattern = "^[A-Za-z\\s !.?',~`:\"]*$";
+
+    public static Food takeUserInputAndBuildFood() {
         Scanner myObj = new Scanner(System.in);
 
-        System.out.println("Enter food name: ");
-        String name = myObj.nextLine();
+        System.out.print("Enter new food name: ");
+        String name = Validations.checkString(myObj, pattern, "name", 3, 100);
 
-        System.out.println("Enter food description: ");
-        String description = myObj.nextLine();
+        System.out.print("Enter new food description: ");
+        String description = Validations.checkString(myObj, pattern, "description", 5, 200);
 
-        System.out.println("Enter food price: ");
-        float price = Integer.parseInt(myObj.nextLine());
+        System.out.print("Enter new food price: ");
+        float price = Validations.checkFloat(myObj, "price");
 
-        System.out.println("Enter food vegan: ");
-        boolean vegan = Boolean.parseBoolean(myObj.nextLine());
+        System.out.print("Is food vegan? [true/false]");
+        boolean vegan = Validations.checkBoolean(myObj, "vegan");
 
         Food food = new Food(name, description, price, vegan);
         Helpers.typeCheck(food);
 
         return food;
     }
+
 }

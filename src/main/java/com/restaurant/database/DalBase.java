@@ -2,33 +2,38 @@ package com.restaurant.database;
 
 import com.restaurant.Food;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public interface DalBase {
 
-    void showAllFood() throws SQLException;
+    void sortAllFoodByName() throws SQLException, IOException;
 
-    void sortAllFoodByName() throws SQLException;
+    void sortAllFoodByPrice() throws SQLException, IOException;
 
-    void sortAllFoodByPrice() throws SQLException;
+    void addFood(Food food) throws SQLException, IOException;
 
-    void addFood(Food food) throws SQLException;
+    void typeList() throws SQLException, IOException;
 
-    void typeList() throws SQLException;
+    void deleteID(long id) throws SQLException, IOException;
 
-    void deleteID(long id) throws SQLException;
+    void deleteName(String name) throws SQLException, IOException;
 
-    void deleteName(String name) throws SQLException;
+    void updateFoodByID(long id) throws SQLException, IOException;
 
-    void updateFoodID(long id) throws SQLException;
+    void updateFoodByName(String name) throws SQLException, IOException;
 
-    void updateFoodName(String name) throws SQLException;
+    Food selectFoodById(long id) throws SQLException, IOException;
 
-   // Food selectFoodById(long id) throws SQLException;
+    Food selectFoodByName(String name) throws SQLException, IOException;
 
-    // Food selectFoodByName(String name) throws SQLException;
+    void updateOnlyVegan(int id) throws SQLException, IOException;
 
-   // boolean isNameUnique(String name) throws SQLException;
+    void updateOnlyName(int id) throws SQLException, IOException;
+
+    void updateOnlyDescription(int id) throws SQLException, IOException;
+
+    void updateOnlyPrice(int id) throws SQLException, IOException;
 
 
 }
